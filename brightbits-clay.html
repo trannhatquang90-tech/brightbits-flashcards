@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>BrightBits - Clay Cards 🧱</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .title { font-size: 32px; font-weight: bold; color: white; margin-bottom: 5px; text-shadow: 3px 3px 0 rgba(0,0,0,0.1); }
+        .streak-badge { 
+            background: white; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            font-size: 18px; 
+            color: #ff6b6b; 
+            font-weight: bold;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.15);
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .progress-bar { 
+            width: 100%; max-width: 400px; height: 12px; 
+            background: white; 
+            border-radius: 20px; 
+            margin-bottom: 25px; 
+            overflow: hidden;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #ff6b6b, #ffa502);
+            border-radius: 20px;
+            transition: width 0.3s;
+            box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1);
+        }
+        
+        .card-container { width: 100%; max-width: 400px; }
+        
+        /* Claymorphism Card - Thick 3D shadows */
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            border-radius: 35px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #ff9a9e;
+            box-shadow: 
+                12px 12px 0 rgba(0,0,0,0.15),
+                20px 20px 0 rgba(0,0,0,0.1);
+        }
+        
+        .flashcard.flipped {
+            background: #4ecdc4;
+            box-shadow: 
+                inset 10px 10px 0 rgba(0,0,0,0.15),
+                inset 15px 15px 0 rgba(255,255,255,0.3);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 35px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .card-front { background: #ff9a9e; }
+        .card-back { 
+            background: #4ecdc4;
+            transform: rotateY(180deg);
+        }
+        
+        .emoji { font-size: 90px; margin-bottom: 20px; filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.1)); }
+        .word { font-size: 34px; font-weight: bold; color: white; margin-bottom: 10px; text-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+        .pronunciation { font-size: 18px; color: rgba(255,255,255,0.9); font-style: italic; margin-bottom: 15px; }
+        .translation { font-size: 22px; color: white; font-weight: 500; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 25px;
+            margin-top: 35px;
+        }
+        
+        .nav-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 20px;
+            background: #ffa502;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 
+                6px 6px 0 rgba(0,0,0,0.15),
+                10px 10px 0 rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn:not(:disabled):active {
+            transform: translate(4px, 4px);
+            box-shadow: 
+                2px 2px 0 rgba(0,0,0,0.15);
+        }
+        
+        .dots {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+        }
+        
+        .dot.active {
+            background: #ff6b6b;
+            width: 40px;
+            border-radius: 10px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">BrightBits</h1>
+        <div class="streak-badge" id="streak" style="display:none;">🔥 Streak: <span id="streak-count">0</span></div>
+    </div>
+    
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width: 20%"></div></div>
+    
+    <div class="card-container">
+        <div class="flashcard" id="card" onclick="flipCard()">
+            <div class="card-face card-front">
+                <div class="emoji" id="emoji">🐶</div>
+                <div class="word" id="word">Dog</div>
+                <div class="pronunciation" id="pronunciation">/dɔɡ/</div>
+                <div class="translation" id="translation">Chó</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="emoji" id="emoji-back">🐕</div>
+                <div class="word" id="word-back">Chó</div>
+                <div class="translation" id="translation-back">Dog</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prev" onclick="prevCard()" disabled>◀</button>
+        <button class="nav-btn" id="next" onclick="nextCard()">▶</button>
+    </div>
+    
+    <div class="dots" id="dots"></div>
+
+    <script>
+        const flashcards = [
+            { emoji: '🐕', word: 'Dog', pronunciation: '/dɔɡ/', translation: 'Chó', image: '🐶' },
+            { emoji: '🍎', word: 'Apple', pronunciation: '/ˈæp.əl/', translation: 'Táo', image: '🍎' },
+            { emoji: '📖', word: 'Book', pronunciation: '/bʊk/', translation: 'Sách', image: '📚' },
+            { emoji: '🌈', word: 'Rainbow', pronunciation: '/ˈreɪn.boʊ/', translation: 'Cầu vồng', image: '🌈' },
+            { emoji: '🐈', word: 'Cat', pronunciation: '/kæt/', translation: 'Mèo', image: '🐱' },
+        ];
+        
+        let currentIndex = 0;
+        let flipped = false;
+        let streak = 0;
+        
+        function updateCard() {
+            const card = flashcards[currentIndex];
+            document.getElementById('emoji').textContent = card.image;
+            document.getElementById('emoji-back').textContent = card.emoji;
+            document.getElementById('word').textContent = card.word;
+            document.getElementById('word-back').textContent = card.translation;
+            document.getElementById('pronunciation').textContent = card.pronunciation;
+            document.getElementById('translation').textContent = card.translation;
+            document.getElementById('translation-back').textContent = card.word;
+            document.getElementById('card').className = 'flashcard' + (flipped ? ' flipped' : '');
+            document.getElementById('prev').disabled = currentIndex === 0;
+            document.getElementById('next').disabled = currentIndex === flashcards.length - 1;
+            document.getElementById('progress').style.width = ((currentIndex + 1) / flashcards.length * 100) + '%';
+            updateDots();
+        }
+        
+        function flipCard() {
+            if (navigator.vibrate) navigator.vibrate(30);
+            flipped = !flipped;
+            if (!flipped) {
+                streak++;
+                document.getElementById('streak').style.display = 'inline-block';
+                document.getElementById('streak-count').textContent = streak;
+            }
+            updateCard();
+        }
+        
+        function prevCard() {
+            if (currentIndex > 0) {
+                if (navigator.vibrate) navigator.vibrate(30);
+                currentIndex--;
+                flipped = false;
+                updateCard();
+            }
+        }
+        
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                if (navigator.vibrate) navigator.vibrate(30);
+                currentIndex++;
+                flipped = false;
+                updateCard();
+            }
+        }
+        
+        function updateDots() {
+            const dots = document.getElementById('dots');
+            dots.innerHTML = '';
+            for (let i = 0; i < flashcards.length; i++) {
+                dots.innerHTML += '<div class="dot' + (i === currentIndex ? ' active' : '') + '"></div>';
+            }
+        }
+        
+        updateCard();
+    </script>
+</body>
+</html>

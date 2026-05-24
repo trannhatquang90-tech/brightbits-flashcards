@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>BrightBits - Kids Vocabulary</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fff5e6;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .header { text-align: center; margin-bottom: 15px; }
+        .title { font-size: 22px; color: #e67e22; font-weight: bold; }
+        .lalala { font-size: 16px; color: #e67e22; font-weight: bold; margin-bottom: 5px; }
+        .streak { background: #FF9800; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; display: inline-block; margin-top: 8px; }
+        
+        .progress-bar { height: 4px; background: #e0e0e0; border-radius: 2px; margin-bottom: 15px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #4CAF50; transition: width 0.3s; }
+        
+        .card { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 20px; 
+            min-height: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            margin: 0 40px;
+        }
+        .card.flipped { background: #e67e22; }
+        
+        .lang { background: #e67e22; color: white; padding: 8px; text-align: center; font-size: 12px; font-weight: bold; margin: -20px -20px 15px -20px; }
+        .card.flipped .lang { background: rgba(0,0,0,0.2); }
+        
+        .emoji { font-size: 80px; text-align: center; margin: 20px 0; }
+        .word { font-size: 28px; font-weight: bold; color: #333; text-align: center; margin-bottom: 5px; }
+        .pronunciation { font-size: 16px; color: #e67e22; text-align: center; font-style: italic; margin-bottom: 10px; }
+        .translation { font-size: 20px; color: #666; text-align: center; }
+        
+        .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: white; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .nav:disabled { opacity: 0.3; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        
+        .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
+        .dot.active { background: #e67e22; width: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="lalala">LALALA</div>
+        <h1 class="title">Kids Vocabulary</h1>
+        <div class="streak" id="streak" style="display:none;">🔥 Streak: <span id="streak-count">0</span></div>
+    </div>
+    
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width: 20%"></div></div>
+    
+    <button class="nav prev" id="prev" disabled>◀</button>
+    
+    <div class="card" id="card" onclick="flipCard()">
+        <div class="lang" id="lang">ENGLISH</div>
+        <div class="emoji" id="emoji">🐶</div>
+        <div class="word" id="word">Dog</div>
+        <div class="pronunciation" id="pronunciation">/dɔɡ/</div>
+        <div class="translation" id="translation">Chó</div>
+    </div>
+    
+    <button class="nav next" id="next">▶</button>
+    
+    <div class="dots" id="dots"></div>
+    
+    <script>
+        const flashcards = [
+            { emoji: '🐕', word: 'Dog', pronunciation: '/dɔɡ/', translation: 'Chó', image: '🐶' },
+            { emoji: '🍎', word: 'Apple', pronunciation: '/ˈæp.əl/', translation: 'Táo', image: '🍎' },
+            { emoji: '📖', word: 'Book', pronunciation: '/bʊk/', translation: 'Sách', image: '📚' },
+            { emoji: '🌈', word: 'Rainbow', pronunciation: '/ˈreɪn.boʊ/', translation: 'Cầu vồng', image: '🌈' },
+            { emoji: '🐈', word: 'Cat', pronunciation: '/kæt/', translation: 'Mèo', image: '🐱' },
+        ];
+        
+        let currentIndex = 0;
+        let flipped = false;
+        let streak = 0;
+        
+        function updateCard() {
+            const card = flashcards[currentIndex];
+            document.getElementById('emoji').textContent = flipped ? card.emoji : card.image;
+            document.getElementById('word').textContent = flipped ? card.translation : card.word;
+            document.getElementById('pronunciation').textContent = flipped ? '' : card.pronunciation;
+            document.getElementById('translation').textContent = flipped ? card.word : card.translation;
+            document.getElementById('lang').textContent = flipped ? 'VIETNAMESE' : 'ENGLISH';
+            document.getElementById('card').className = 'card' + (flipped ? ' flipped' : '');
+            
+            document.getElementById('prev').disabled = currentIndex === 0;
+            document.getElementById('next').disabled = currentIndex === flashcards.length - 1;
+            
+            document.getElementById('progress').style.width = ((currentIndex + 1) / flashcards.length * 100) + '%';
+        }
+        
+        function flipCard() {
+            if (navigator.vibrate) navigator.vibrate(30);
+            flipped = !flipped;
+            
+            if (!flipped) {
+                streak++;
+                document.getElementById('streak').style.display = 'inline-block';
+                document.getElementById('streak-count').textContent = streak;
+            }
+            
+            updateCard();
+        }
+        
+        function prevCard() {
+            if (currentIndex > 0) {
+                if (navigator.vibrate) navigator.vibrate(30);
+                currentIndex--;
+                flipped = false;
+                updateCard();
+            }
+        }
+        
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                if (navigator.vibrate) navigator.vibrate(30);
+                currentIndex++;
+                flipped = false;
+                updateCard();
+            }
+        }
+        
+        document.getElementById('prev').onclick = prevCard;
+        document.getElementById('next').onclick = nextCard;
+        
+        // Create dots
+        const dots = document.getElementById('dots');
+        for (let i = 0; i < flashcards.length; i++) {
+            dots.innerHTML += '<div class="dot' + (i === 0 ? ' active' : '') + '"></div>';
+        }
+        
+        updateCard();
+    </script>
+</body>
+</html>
