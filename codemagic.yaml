@@ -1,0 +1,18 @@
+workflows:
+  build_ios:
+    name: BrightBits iOS Build
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install --legacy-peer-deps
+          npx expo install --fix
+      - name: Prebuild iOS
+        script: |
+          npx expo prebuild --platform ios
+      - name: Build iOS
+        script: |
+          npx eas-cli build --platform ios --profile production --non-interactive
+        env:
+          EXPO_TOKEN: $EXPO_TOKEN
+    artifacts:
+      - build/**/output/*ipa
