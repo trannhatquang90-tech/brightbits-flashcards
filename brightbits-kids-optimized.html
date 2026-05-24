@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>BrightBits Kids 🐾</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
+        }
+        
+        /* HEADER - Simplified */
+        .header { 
+            text-align: center; 
+            width: 100%; 
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .title { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #4a5568; 
+            margin-bottom: 8px;
+        }
+        
+        /* LANGUAGE SELECTOR - Larger for kids */
+        .lang-selector {
+            position: absolute;
+            top: 0;
+            right: 10px;
+        }
+        .lang-flag {
+            width: 50px;
+            height: 34px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+        
+        /* TOPIC BAR - Bigger buttons */
+        .topic-scroll {
+            width: 100%;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .topic-selector {
+            display: flex;
+            gap: 12px;
+            padding: 0 10px;
+            white-space: nowrap;
+        }
+        .topic-btn {
+            padding: 16px 24px;
+            border-radius: 30px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(255,255,255,0.8);
+            color: #555;
+            flex-shrink: 0;
+        }
+        .topic-btn.active {
+            background: linear-gradient(135deg, #ff6b6b, #ffa502);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        /* CARD - Larger touch target */
+        .card-wrapper {
+            position: relative;
+            width: calc(100vw - 20px);
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        
+        /* BIGGER NAV BUTTONS - 72px minimum for toddler hands */
+        .nav-btn-side {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffa502);
+            border: none;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-btn-side.left { left: 5px; }
+        .nav-btn-side.right { right: 5px; }
+        
+        .card-container { 
+            width: 100%; 
+            padding: 0 80px;
+            position: relative;
+        }
+        
+        /* Card shadow layers */
+        .shadow-layer-1 {
+            position: absolute;
+            top: 8px;
+            left: 80px;
+            right: 80px;
+            bottom: -8px;
+            border-radius: 30px;
+            background: rgba(255,107,107,0.4);
+            z-index: 1;
+        }
+        .shadow-layer-2 {
+            position: absolute;
+            top: 16px;
+            left: 60px;
+            right: 60px;
+            bottom: -16px;
+            border-radius: 30px;
+            background: rgba(255,165,2,0.3);
+            z-index: 0;
+        }
+        
+        .flashcard {
+            position: relative;
+            width: 100%;
+            padding-bottom: 140%;
+            border-radius: 30px;
+            overflow: hidden;
+            z-index: 2;
+            cursor: pointer;
+        }
+        
+        .animal-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* TEXT SECTION - Bigger, clearer */
+        .text-section {
+            width: calc(100vw - 20px);
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .word { 
+            font-size: 36px; 
+            font-weight: bold; 
+            color: #2d3748;
+            text-align: center;
+        }
+        
+        /* PROGRESS DOTS - Larger */
+        .dots {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .dot {
+            width: 16px; 
+            height: 16px; 
+            border-radius: 50%;
+            background: white; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .dot.active { 
+            background: #ff6b6b; 
+            width: 24px; 
+            border-radius: 12px;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">BrightBits 🐾</h1>
+        
+        <!-- Language Selector -->
+        <div class="lang-selector" id="langSelector">
+            <img src="https://flagcdn.com/vn.svg" class="lang-flag" id="currentFlag" onclick="toggleLangDropdown()" alt="VN">
+        </div>
+        
+        <div class="topic-scroll" id="topicScroll">
+            <div class="topic-selector">
+                <button class="topic-btn active" onclick="selectTopic('animal')">🐾 Animal</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-wrapper">
+        <button class="nav-btn-side left" id="prev" onclick="prevCard()">◀</button>
+        <button class="nav-btn-side right" id="next" onclick="nextCard()">▶</button>
+        <div class="card-container">
+            <div class="shadow-layer-2"></div>
+            <div class="shadow-layer-1"></div>
+            <div class="flashcard" id="card" onclick="speakCurrent()">
+                <div class="animal-bg" id="bg"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-section">
+        <div class="word" id="word">Dog</div>
+    </div>
+    
+    <div class="dots" id="dots"></div>
+
+    <script>
+        /* RESEARCH-BACKED VOCABULARY CARDS */
+        const flashcards = [
+            { key: 'dog', word: 'Dog', translation: 'Chó' },
+            { key: 'cat', word: 'Cat', translation: 'Mèo' },
+            { key: 'elephant', word: 'Elephant', translation: 'Voi' },
+            { key: 'dolphin', word: 'Dolphin', translation: 'Cá Heo' },
+            { key: 'monkey', word: 'Monkey', translation: 'Khỉ' },
+            { key: 'rabbit', word: 'Rabbit', translation: 'Thỏ' },
+            { key: 'turtle', word: 'Turtle', translation: 'Rùa' },
+            { key: 'lion', word: 'Lion', translation: 'Sư Tử' },
+            { key: 'penguin', word: 'Penguin', translation: 'Cánh Cụt' },
+            { key: 'giraffe', word: 'Giraffe', translation: 'Hươu' },
+        ];
+        
+        let currentIndex = 0;
+        let currentLang = 'vi';
+        let hasSpoken = false;
+        
+        /* CARD UPDATE - Image-first, then audio (200-300ms delay) */
+        function updateCard() {
+            const card = flashcards[currentIndex];
+            const imgUrl = `images/${card.key}.jpg`;
+            const bg = document.getElementById('bg');
+            
+            /* Reset speech flag */
+            hasSpoken = false;
+            
+            /* Image transition */
+            bg.style.opacity = 0;
+            
+            setTimeout(() => {
+                bg.style.backgroundImage = `url('${imgUrl}')`;
+                updateText();
+                bg.style.opacity = 1;
+                
+                /* Speak AFTER image appears - research-backed timing */
+                // setTimeout(() => speakCurrent(), 300); // Will be triggered by user tap
+            }, 150);
+            
+            updateDots();
+        }
+        
+        function updateText() {
+            const card = flashcards[currentIndex];
+            const displayText = currentLang === 'en' ? card.word : card.translation;
+            document.getElementById('word').textContent = displayText;
+        }
+        
+        function prevCard() {
+            if (navigator.vibrate) navigator.vibrate(30);
+            currentIndex--;
+            if (currentIndex < 0) currentIndex = flashcards.length - 1;
+            updateCard();
+        }
+        
+        function nextCard() {
+            if (navigator.vibrate) navigator.vibrate(30);
+            currentIndex++;
+            if (currentIndex >= flashcards.length) currentIndex = 0;
+            updateCard();
+        }
+        
+        /* SPEECH FUNCTIONS - Consistent pronunciation */
+        function speakEnglish() {
+            window.speechSynthesis.cancel();
+            const card = flashcards[currentIndex];
+            const utterance = new SpeechSynthesisUtterance(card.word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        function speakVietnamese() {
+            window.speechSynthesis.cancel();
+            const card = flashcards[currentIndex];
+            const utterance = new SpeechSynthesisUtterance(card.translation);
+            utterance.lang = 'vi-VN';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        function speakCurrent() {
+            if (currentLang === 'en') {
+                speakEnglish();
+            } else {
+                speakVietnamese();
+            }
+        }
+        
+        function toggleLangDropdown() {
+            const dropdown = document.getElementById('langDropdown');
+            if (dropdown) dropdown.classList.toggle('show');
+        }
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            const flag = document.getElementById('currentFlag');
+            flag.src = lang === 'en' ? 'https://flagcdn.com/us.svg' : 'https://flagcdn.com/vn.svg';
+            updateText();
+        }
+        
+        function updateDots() {
+            const dots = document.getElementById('dots');
+            dots.innerHTML = '';
+            for (let i = 0; i < flashcards.length; i++) {
+                dots.innerHTML += `<div class="dot${i === currentIndex ? ' active' : ''}"></div>`;
+            }
+        }
+        
+        /* Initialize */
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCard();
+        });
+    </script>
+</body>
+</html>
