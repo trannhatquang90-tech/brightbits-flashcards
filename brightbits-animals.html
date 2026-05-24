@@ -132,23 +132,23 @@
             position: relative;
         }
         
-        /* Shadow layers */
+        /* Shadow layers - shadow layer to hơn card */
         .shadow-layer-1 {
             position: absolute;
-            top: 12px;
-            left: 40px;
-            right: 40px;
-            bottom: -12px;
+            top: 15px;
+            left: 5px;
+            right: 5px;
+            bottom: -15px;
             border-radius: 25px;
             background: rgba(255,107,107,0.3);
             z-index: 1;
         }
         .shadow-layer-2 {
             position: absolute;
-            top: 25px;
-            left: 60px;
-            right: 60px;
-            bottom: -25px;
+            top: 30px;
+            left: 0px;
+            right: 0px;
+            bottom: -30px;
             border-radius: 25px;
             background: rgba(255,165,2,0.2);
             z-index: 0;
@@ -157,12 +157,11 @@
         .flashcard {
             position: relative;
             width: 100%;
-            padding-bottom: 180%;
+            padding-bottom: 150%; /* Tỉ lệ 4:6 */
             border-radius: 30px;
             overflow: hidden;
             z-index: 2;
             cursor: pointer;
-            min-height: 300px; /* Đảm bảo card đủ cao */
         }
         
         .animal-bg {
