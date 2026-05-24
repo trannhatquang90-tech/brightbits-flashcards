@@ -129,6 +129,7 @@
         
         .card-container { 
             width: 100%; 
+            padding: 0 45px; /* Card nhỏ hơn shadow layer */
             position: relative;
         }
         
@@ -136,8 +137,8 @@
         .shadow-layer-1 {
             position: absolute;
             top: 12px;
-            left: 15px;
-            right: 15px;
+            left: 38px;
+            right: 38px;
             bottom: -12px;
             border-radius: 25px;
             background: rgba(255,107,107,0.3);
@@ -146,8 +147,8 @@
         .shadow-layer-2 {
             position: absolute;
             top: 25px;
-            left: 0px;
-            right: 0px;
+            left: 22px;
+            right: 22px;
             bottom: -25px;
             border-radius: 25px;
             background: rgba(255,165,2,0.2);
@@ -157,12 +158,11 @@
         .flashcard {
             position: relative;
             width: 100%;
-            padding-bottom: 180%;
+            padding-bottom: 150%; /* Tỉ lệ 4:6 */
             border-radius: 30px;
             overflow: hidden;
             z-index: 2;
             cursor: pointer;
-            min-height: 300px; /* Đảm bảo card đủ cao */
         }
         
         .animal-bg {
