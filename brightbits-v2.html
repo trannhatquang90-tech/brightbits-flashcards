@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BrightBits Kids</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+        }
+        .header { text-align: center; margin-bottom: 8px; width: 100%; position: relative; }
+        .title { font-size: 24px; font-weight: bold; color: #4a5568; margin-bottom: 8px; }
+        .category-bar { width: 100%; overflow-x: auto; padding: 4px 0; margin-bottom: 8px; }
+        .category-bar::-webkit-scrollbar { display: none; }
+        .categories { display: flex; gap: 12px; padding: 0 8px; white-space: nowrap; }
+        .cat-btn { padding: 12px 20px; border-radius: 25px; border: none; font-size: 16px; font-weight: 600; background: rgba(255,255,255,0.9); cursor: pointer; }
+        .cat-btn.active { background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; }
+        .card-area { position: relative; width: 100%; max-width: 500px; margin-bottom: 20px; }
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 70px; height: 70px; border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ffa502);
+            border: none; color: white; font-size: 30px;
+            cursor: pointer; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .nav-btn.left { left: 0; }
+        .nav-btn.right { right: 0; }
+        .card-stack {
+            width: 100%; padding: 0 70px; position: relative;
+        }
+        .shadow {
+            position: absolute; border-radius: 25px;
+        }
+        .shadow-1 { top: 8px; left: 30px; right: 30px; bottom: -8px; background: rgba(255,107,107,0.3); z-index: 1; }
+        .shadow-2 { top: 15px; left: 15px; right: 15px; bottom: -15px; background: rgba(255,165,2,0.2); z-index: 0; }
+        .flashcard {
+            position: relative; width: 100%; padding-bottom: 190%;
+            border-radius: 25px; background: #ddd; z-index: 2; cursor: pointer;
+            overflow: hidden;
+        }
+        .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; }
+        .word { font-size: 36px; font-weight: bold; color: #2d3748; text-align: center; margin: 12px 0; }
+        .progress { display: flex; gap: 8px; justify-content: center; }
+        .dot { width: 14px; height: 14px; border-radius: 5px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .dot.active { background: #ff6b6b; width: 30px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">BrightBits 🐾</h1>
+    </div>
+    <div class="category-bar">
+        <div class="categories">
+            <button class="cat-btn active">🐾 Animal</button>
+        </div>
+    </div>
+    <div class="card-area">
+        <button class="nav-btn left" onclick="prevCard()">◀</button>
+        <button class="nav-btn right" onclick="nextCard()">▶</button>
+        <div class="card-stack">
+            <div class="shadow shadow-2"></div>
+            <div class="shadow shadow-1"></div>
+            <div class="flashcard" id="card" onclick="speakWord()">
+                <div class="card-img" id="cardImg"></div>
+            </div>
+        </div>
+    </div>
+    <div class="word" id="word">Dog</div>
+    <div class="progress" id="dots"></div>
+    <script>
+        const cards = [
+            { word: 'Dog', translation: 'Chó', img: 'images/dog.jpg' },
+            { word: 'Cat', translation: 'Mèo', img: 'images/cat.jpg' },
+            { word: 'Lion', translation: 'Sư Tử', img: 'images/lion.jpg' },
+        ];
+        let idx = 0;
+        function update() {
+            document.getElementById('word').textContent = cards[idx].word;
+            document.getElementById('cardImg').style.backgroundImage = `url(${cards[idx].img})`;
+            document.getElementById('dots').innerHTML = cards.map((_, i) => `<div class="dot${i === idx ? ' active' : ''}"></div>`).join('');
+        }
+        function prevCard() { idx = idx <= 0 ? cards.length - 1 : idx - 1; update(); }
+        function nextCard() { idx = idx >= cards.length - 1 ? 0 : idx + 1; update(); }
+        function speakWord() {
+            const utter = new SpeechSynthesisUtterance(cards[idx].word);
+            utter.lang = 'en-US';
+            utter.rate = 0.9;
+            speechSynthesis.speak(utter);
+        }
+        update();
+        setTimeout(speakWord, 2000);
+    </script>
+</body>
+</html>
