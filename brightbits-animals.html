@@ -129,7 +129,7 @@
         
         .card-container { 
             width: 100%; 
-            padding: 0 50px;
+            padding: 0 80px; /* Đủ chỗ cho nav buttons */
             position: relative;
         }
         
@@ -157,8 +157,8 @@
         
         .flashcard {
             position: relative;
-            width: calc(100vw - 40px);
-            padding-bottom: 160%; /* Tăng chiều cao card */
+            width: 100%;
+            padding-bottom: 140%; /* Card tỷ lệ vừa phải */
             border-radius: 30px;
             overflow: hidden;
             z-index: 2;
@@ -313,7 +313,7 @@
                 bg.style.backgroundImage = `url('${imgUrl}')`;
                 updateText();
                 bg.style.opacity = 1;
-                setTimeout(() => speakCurrent(), 2000);
+                setTimeout(() => speakCurrent(), 2000); // Keep auto-speak
             }, 150);
             
             updateDots();
