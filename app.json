@@ -1,13 +1,21 @@
 {
   "expo": {
     "name": "BrightBits",
-    "slug": "BrightBits",
+    "slug": "brightbits",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "description": "Learn animal names in English and Vietnamese with flashcards",
+    "primaryColor": "#ff6b6b",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.trannhatquang.brightbits",
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "NSMicrophoneUsageDescription": "This app uses the microphone for voice features"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -15,7 +23,8 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "package": "com.trannhatquang.brightbits"
     },
     "web": {
       "favicon": "./assets/favicon.png"
