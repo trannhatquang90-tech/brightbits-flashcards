@@ -17,232 +17,47 @@
         }
         .header { text-align: center; margin-bottom: 10px; width: 100%; position: relative; }
         .title { font-size: 28px; font-weight: bold; color: #4a5568; margin-bottom: 15px; }
-        
-        .lang-selector {
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-        
-        .lang-flag {
-            width: 40px;
-            height: 28px;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        
-        .lang-dropdown {
-            position: absolute;
-            top: 35px;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 100;
-        }
-        
-        .lang-dropdown.show { display: block; }
-        
-        .lang-option {
-            padding: 10px 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
-        
-        .lang-option:hover { background: #f5f5f5; }
-        
-        .lang-option img {
-            width: 30px;
-            height: 20px;
-            border-radius: 3px;
-        }
-        
-        .topic-scroll {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 5px 0;
-            margin-bottom: 15px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .topic-selector {
-            display: flex;
-            gap: 16px;
-            padding-left: 0px;
-            padding-right: 24px;
-            white-space: nowrap;
-        }
-        .topic-btn {
-            padding: 16px 28px; /* Tăng padding cho bé */
-            border-radius: 30px;
-            border: none;
-            font-size: 18px; /* Tăng font */
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: rgba(255,255,255,0.8);
-            color: #555;
-            flex-shrink: 0;
-        }
-        .topic-btn.active {
-            background: linear-gradient(135deg, #ff6b6b, #ffa502);
-            color: white;
-        }
+        .topic-scroll { width: 100%; overflow-x: auto; padding: 5px 0; margin-bottom: 15px; -webkit-overflow-scrolling: touch; }
+        .topic-scroll::-webkit-scrollbar { display: none; }
+        .topic-selector { display: flex; gap: 16px; padding-left: 0px; padding-right: 24px; white-space: nowrap; }
+        .topic-btn { padding: 16px 28px; border-radius: 30px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.8); color: #555; flex-shrink: 0; }
+        .topic-btn.active { background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; }
         .topic-btn.locked { opacity: 0.5; position: relative; }
         .topic-btn.locked::after { content: "🔒"; margin-left: 6px; }
-        .topic-scroll::-webkit-scrollbar { display: none; }
         
-        .card-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 30px;
-        }
-        
-        .nav-btn-side {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 72px; /* Tăng kích thước cho trẻ em */
-            height: 72px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b6b, #ffa502);
-            border: none;
-            color: white;
-            font-size: 32px; /* Tăng icon size */
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-            z-index: 20; /* Đảm bảo nằm trên card */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .card-wrapper { position: relative; width: 100%; max-width: 500px; margin-bottom: 30px; }
+        .nav-btn-side { position: absolute; top: 50%; transform: translateY(-50%); width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #ff6b6b, #ffa502); border: none; color: white; font-size: 32px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 20; display: flex; align-items: center; justify-content: center; }
         .nav-btn-side.left { left: -15px; }
         .nav-btn-side.right { right: -15px; }
+        .card-container { width: 100%; padding: 0 60px; position: relative; }
         
-        .card-container { 
-            width: 100%; 
-            position: relative;
-        }
+        /* Shadow layers - TO HƠN CARD */
+        .shadow-layer-1 { position: absolute; top: 15px; left: 5px; right: 5px; bottom: -15px; border-radius: 25px; background: rgba(255,107,107,0.3); z-index: 1; }
+        .shadow-layer-2 { position: absolute; top: 30px; left: 0px; right: 0px; bottom: -30px; border-radius: 25px; background: rgba(255,165,2,0.2); z-index: 0; }
         
-        /* Shadow layers - shadow layer to hơn card */
-        .shadow-layer-1 {
-            position: absolute;
-            top: 15px;
-            left: 5px;
-            right: 5px;
-            bottom: -15px;
-            border-radius: 25px;
-            background: rgba(255,107,107,0.3);
-            z-index: 1;
-        }
-        .shadow-layer-2 {
-            position: absolute;
-            top: 30px;
-            left: 0px;
-            right: 0px;
-            bottom: -30px;
-            border-radius: 25px;
-            background: rgba(255,165,2,0.2);
-            z-index: 0;
-        }
+        .flashcard { position: relative; width: 100%; padding-bottom: 150%; border-radius: 30px; overflow: hidden; z-index: 2; cursor: pointer; margin: 0 auto; }
+        .animal-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; transition: opacity 0.3s ease; }
         
-        .flashcard {
-            position: relative;
-            width: 100%;
-            padding-bottom: 150%; /* Tỉ lệ 4:6 */
-            border-radius: 30px;
-            overflow: hidden;
-            z-index: 2;
-            cursor: pointer;
-        }
-        
-        .animal-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: opacity 0.3s ease;
-        }
-        
-        /* Text section */
-        .text-section {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .word { 
-            font-size: 36px; /* Tăng font size cho trẻ em */
-            font-weight: bold; 
-            color: #2d3748; 
-        }
-        .pronunciation { 
-            font-size: 18px; /* Tăng kích thước */
-            color: #718096; 
-            font-style: italic; 
-        }
-        
-        .dots {
-            display: flex;
-            gap: 8px;
-            margin-top: 5px;
-        }
-        .dot {
-            width: 14px; height: 14px; border-radius: 5px;
-            background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-        }
-        .dot.active { 
-            background: #ff6b6b; 
-            width: 35px; 
-            border-radius: 8px;
-            transform: scale(1.1);
-        }
+        .word { font-size: 36px; font-weight: bold; color: #2d3748; text-align: center; margin: 12px 0; }
+        .dots { display: flex; gap: 8px; justify-content: center; }
+        .dot { width: 14px; height: 14px; border-radius: 5px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .dot.active { background: #ff6b6b; width: 30px; border-radius: 8px; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1 class="title">BrightBits 🐾</h1>
-        
-        <!-- Language Selector -->
-        <div class="lang-selector" id="langSelector">
-            <img src="https://flagcdn.com/vn.svg" class="lang-flag" id="currentFlag" onclick="toggleLangDropdown()" alt="VN">
-            <div class="lang-dropdown" id="langDropdown">
-                <div class="lang-option" onclick="setLanguage('en')">
-                    <img src="https://flagcdn.com/us.svg" alt="US"> English
-                </div>
-                <div class="lang-option" onclick="setLanguage('vi')">
-                    <img src="https://flagcdn.com/vn.svg" alt="VN"> Tiếng Việt
-                </div>
-            </div>
-        </div>
-        
-        <div class="topic-scroll" id="topicScroll">
+        <div class="topic-scroll">
             <div class="topic-selector">
-                <button class="topic-btn active" onclick="selectTopic('animal')">🐾 Animal</button>
-                <button class="topic-btn locked" onclick="showLocked()">🚗 Vehicle</button>
-                <button class="topic-btn locked" onclick="showLocked()">🍎 Food</button>
-                <button class="topic-btn locked" onclick="showLocked()">🏠 Home</button>
+                <button class="topic-btn active">🐾 Animal</button>
+                <button class="topic-btn locked">🚗 Vehicle</button>
+                <button class="topic-btn locked">🍎 Food</button>
             </div>
         </div>
     </div>
-    
     <div class="card-wrapper">
-        <button class="nav-btn-side left" id="prev" onclick="prevCard()">◀</button>
-        <button class="nav-btn-side right" id="next" onclick="nextCard()">▶</button>
+        <button class="nav-btn-side left" onclick="prevCard()">◀</button>
+        <button class="nav-btn-side right" onclick="nextCard()">▶</button>
         <div class="card-container">
             <div class="shadow-layer-2"></div>
             <div class="shadow-layer-1"></div>
@@ -251,168 +66,29 @@
             </div>
         </div>
     </div>
-    
-    <div class="text-section">
-        <div class="word" id="word">Dog</div>
-    </div>
-    
+    <div class="word" id="word">Dog</div>
     <div class="dots" id="dots"></div>
-
     <script>
         const flashcards = [
-            { key: 'dog', word: 'Dog', pronunciation: '/dɔɡ/', translation: 'Chó' },
-            { key: 'cat', word: 'Cat', pronunciation: '/kæt/', translation: 'Mèo' },
-            { key: 'elephant', word: 'Elephant', pronunciation: '/ˈel.ə.fənt/', translation: 'Voi' },
-            { key: 'dolphin', word: 'Dolphin', pronunciation: '/ˈdɑː.lˌfɪn/', translation: 'Cá Heo' },
-            { key: 'monkey', word: 'Monkey', pronunciation: '/ˈmʌn.ki/', translation: 'Khỉ' },
-            { key: 'rabbit', word: 'Rabbit', pronunciation: '/ˈræb.ɪt/', translation: 'Thỏ' },
-            { key: 'turtle', word: 'Turtle', pronunciation: '/ˈtɜːr.təl/', translation: 'Rùa' },
-            { key: 'lion', word: 'Lion', pronunciation: '/ˈlaɪ.ən/', translation: 'Sư Tử' },
-            { key: 'penguin', word: 'Penguin', pronunciation: '/ˈpeŋ.ɡwɪn/', translation: 'Chim Cánh Cụt' },
-            { key: 'giraffe', word: 'Giraffe', pronunciation: '/dʒəˈræf/', translation: 'Hươu Cao Cổ' },
+            { key: 'dog', word: 'Dog', translation: 'Chó' },
+            { key: 'cat', word: 'Cat', translation: 'Mèo' },
+            { key: 'lion', word: 'Lion', translation: 'Sư Tử' },
         ];
-        
-        let currentIndex = 0;
-        let currentLang = 'vi'; // Default language
-        
-        // Swipe handling
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const swipeThreshold = 50;
-        
-        const card = document.getElementById('card');
-        card.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-        
-        card.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-        
-        function handleSwipe() {
-            const swipeDistance = touchStartX - touchEndX;
-            if (Math.abs(swipeDistance) > swipeThreshold) {
-                if (swipeDistance > 0) {
-                    nextCard(); // Swipe left - next card
-                } else {
-                    prevCard(); // Swipe right - prev card
-                }
-            }
+        let idx = 0;
+        function update() {
+            document.getElementById('word').textContent = flashcards[idx].word;
+            document.getElementById('bg').style.backgroundImage = `url(images/${flashcards[idx].key}.jpg)`;
+            document.getElementById('dots').innerHTML = flashcards.map((_, i) => `<div class="dot${i===idx?' active':''}"></div>`).join('');
         }
-        
-        function updateCard() {
-            const card = flashcards[currentIndex];
-            const imgUrl = `images/${card.key}.jpg`;
-            const bg = document.getElementById('bg');
-            
-            bg.style.opacity = 0;
-            
-            setTimeout(() => {
-                bg.style.backgroundImage = `url('${imgUrl}')`;
-                updateText();
-                bg.style.opacity = 1;
-                setTimeout(() => speakCurrent(), 2000); // Keep auto-speak
-            }, 150);
-            
-            updateDots();
-        }
-        
-        function updateText() {
-            const card = flashcards[currentIndex];
-            const displayText = currentLang === 'en' ? card.word : card.translation;
-            document.getElementById('word').textContent = displayText;
-        }
-        
-        function prevCard() {
-            if (navigator.vibrate) navigator.vibrate(30);
-            currentIndex--;
-            if (currentIndex < 0) currentIndex = flashcards.length - 1;
-            updateCard();
-        }
-        
-        function nextCard() {
-            if (navigator.vibrate) navigator.vibrate(30);
-            currentIndex++;
-            if (currentIndex >= flashcards.length) currentIndex = 0;
-            updateCard();
-        }
-        
-        function speakEnglish() {
-            window.speechSynthesis.cancel();
-            const card = flashcards[currentIndex];
-            const utterance = new SpeechSynthesisUtterance(card.word);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-        
-        function speakVietnamese() {
-            window.speechSynthesis.cancel();
-            const card = flashcards[currentIndex];
-            const utterance = new SpeechSynthesisUtterance(card.translation);
-            utterance.lang = 'vi-VN';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-        
+        function prevCard() { idx = idx <= 0 ? flashcards.length - 1 : idx - 1; update(); }
+        function nextCard() { idx = idx >= flashcards.length - 1 ? 0 : idx + 1; update(); }
         function speakCurrent() {
-            if (currentLang === 'en') {
-                speakEnglish();
-            } else {
-                speakVietnamese();
-            }
+            const utter = new SpeechSynthesisUtterance(flashcards[idx].word);
+            utter.lang = 'en-US'; utter.rate = 0.9;
+            speechSynthesis.speak(utter);
         }
-        
-        function toggleLangDropdown() {
-            const dropdown = document.getElementById('langDropdown');
-            dropdown.classList.toggle('show');
-        }
-        
-        function setLanguage(lang) {
-            currentLang = lang;
-            const flag = document.getElementById('currentFlag');
-            if (lang === 'en') {
-                flag.src = 'https://flagcdn.com/us.svg';
-                flag.alt = 'US';
-            } else {
-                flag.src = 'https://flagcdn.com/vn.svg';
-                flag.alt = 'VN';
-            }
-            document.getElementById('langDropdown').classList.remove('show');
-            updateText();
-        }
-        
-        function selectTopic(topic) {
-            if (topic === 'animal') {
-                document.querySelectorAll('.topic-btn').forEach(btn => btn.classList.remove('active'));
-                event.target.classList.add('active');
-            }
-        }
-        
-        function showLocked() {
-            alert('🔒 This collection is locked!\n\nUpgrade to BrightBits Pro to unlock more topics!');
-        }
-        
-        function updateDots() {
-            const dots = document.getElementById('dots');
-            dots.innerHTML = '';
-            for (let i = 0; i < flashcards.length; i++) {
-                dots.innerHTML += '<div class="dot' + (i === currentIndex ? ' active' : '') + '"></div>';
-            }
-        }
-        
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.lang-selector')) {
-                document.getElementById('langDropdown').classList.remove('show');
-            }
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('topicScroll').scrollLeft = 0;
-        });
-        
-        updateCard();
+        update();
+        setTimeout(speakCurrent, 2000);
     </script>
 </body>
 </html>
